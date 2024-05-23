@@ -1,6 +1,6 @@
 export interface IsummData {
   icon: string;
   text: string;
-  amount: string;
+  amount: any;
   currency: string;
 }

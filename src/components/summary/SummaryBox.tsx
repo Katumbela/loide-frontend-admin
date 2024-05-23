@@ -14,10 +14,10 @@ const SummaryBox: React.FC<{ item: Props }> = (props) => {
             <Icon icon={props.item.icon} width="56" />
           </div>
           <div className={classes.summary__box__info}>
-            <p>{t(props.item.text)}</p>
+            <p>{props.item.text}</p>
             <div className={classes.summary__box__info__amount}>
-              <h4>{t(props.item.amount)}</h4>
-              <sup>{t(props.item.currency)}</sup>
+              <h4>{props.item.amount}</h4>
+              <sup>{props.item.currency}</sup>
             </div>
           </div>
         </div>

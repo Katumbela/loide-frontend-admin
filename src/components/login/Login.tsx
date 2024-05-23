@@ -1,5 +1,4 @@
-import React, { useContext, useRef } from "react";
-
+import React, { useContext, useRef, useState } from "react";
 import LoginContext from "../../store/loginContext";
 import langContextObj from "../../store/langContext";
 import { images } from "../../constants";
@@ -8,32 +7,53 @@ import Button from "../UI/button/Button";
 import { useTranslation } from "react-i18next";
 import classes from "./Login.module.scss";
 import { Link, useNavigate } from "react-router-dom";
+import { login, LoginCredentials } from "../../services/loginService";
 
 function LoginBox() {
   const loginCtx = useContext(LoginContext);
   const langCtx = useContext(langContextObj);
   const userNameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const errorMessageRef = useRef<HTMLSpanElement>(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  let isValid = true;
-  function loginHandler(e: React.FormEvent) {
+  const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    isValid = userNameRef.current?.value === "admin";
-    if (userNameRef.current) {
-      if (isValid) {
-        loginCtx.toggleLogin();
-        navigate("/");
-      } else {
-        userNameRef.current.focus();
+    if (userNameRef.current && passwordRef.current) {
+      const credentials: LoginCredentials = {
+        email: userNameRef.current.value,
+        password: passwordRef.current.value,
+      };
+
+      try {
+        const response = await login(credentials);
+        console.log(response)
+        const responseString = JSON.stringify(response);
+
+        // Armazene a string JSON no localStorage
+        localStorage.setItem('account', responseString);
+
+        if (response.status) {
+          loginCtx.toggleLogin();
+          navigate("/");
+        } else {
+          setErrorMessage(response.message);
+          errorMessageRef.current?.setAttribute(
+            "style",
+            "display: inline-block;opacity: 1"
+          );
+        }
+      } catch (error: any) {
+        setErrorMessage(error.message);
         errorMessageRef.current?.setAttribute(
           "style",
           "display: inline-block;opacity: 1"
         );
       }
     }
-  }
+  };
 
   return (
     <div
@@ -57,13 +77,13 @@ function LoginBox() {
             placeholder={"admin"}
           />
           <span ref={errorMessageRef} className={classes.errorMessage}>
-            {t("errorMessage")}
+            {errorMessage || t("errorMessage")}
           </span>
           <Input
+            ref={passwordRef}
             type={"password"}
             id={"pass"}
-            value={"admin"}
-            readonly={false}
+            placeholder={"admin"}
           />
           <Button type="submit">{t("login")}</Button>
           <Link className={classes.forgat_pass} to="/">
