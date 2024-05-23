@@ -15,6 +15,7 @@ function LoginBox() {
   const userNameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const errorMessageRef = useRef<HTMLSpanElement>(null);
+  const [load, setLoading] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,6 +23,7 @@ function LoginBox() {
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userNameRef.current && passwordRef.current) {
+      setLoading(true);
       const credentials: LoginCredentials = {
         email: userNameRef.current.value,
         password: passwordRef.current.value,
@@ -29,17 +31,21 @@ function LoginBox() {
 
       try {
         const response = await login(credentials);
-        console.log(response)
+        console.log(response);
         const responseString = JSON.stringify(response);
 
         // Armazene a string JSON no localStorage
-        localStorage.setItem('account', responseString);
+        localStorage.setItem("account", responseString);
 
         if (response.status) {
           loginCtx.toggleLogin();
+
+          setLoading(false);
           navigate("/");
         } else {
           setErrorMessage(response.message);
+
+          setLoading(false);
           errorMessageRef.current?.setAttribute(
             "style",
             "display: inline-block;opacity: 1"
