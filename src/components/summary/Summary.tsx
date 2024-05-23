@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
-import FaPeople, { IconContext } from "react-icons";
-
+import React, { useEffect, useState } from "react"; 
 import SummaryBox from "./SummaryBox";
 import { useTranslation } from "react-i18next";
 import classes from "./Summary.module.scss";
-import { IsummData } from "../../interfaces/IsummData";
-import { LoginResponse } from "../../interfaces/userInterface";
+import { IsummData } from "../../interfaces/IsummData"; 
 import { makeAuthorizedRequest } from "../../services/authorizedRequest";
 import { AlunoInscrito } from "../../interfaces/aluno";
 import { MatriculaCompleta, Propina } from "../../interfaces/matriculado";
 import { formatMoney } from "../../utils/formatToMoney";
 
 function Summary() {
-  const { t } = useTranslation();
-
+  
   const [inscritos, setInscritos] = useState<AlunoInscrito[]>([]);
   const [matriculados, setMatriculados] = useState<MatriculaCompleta[]>([]);
   const [Propinas, setPropinas] = useState<Propina[]>([]);
