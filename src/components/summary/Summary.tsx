@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import SummaryBox from "./SummaryBox";
 import { useTranslation } from "react-i18next";
 import classes from "./Summary.module.scss";
-import { IsummData } from "../../interfaces/IsummData"; 
+import { IsummData } from "../../interfaces/IsummData";
 import { makeAuthorizedRequest } from "../../services/authorizedRequest";
 import { AlunoInscrito } from "../../interfaces/aluno";
 import { MatriculaCompleta, Propina } from "../../interfaces/matriculado";
 import { formatMoney } from "../../utils/formatToMoney";
 
 function Summary() {
-  
+
   const [inscritos, setInscritos] = useState<AlunoInscrito[]>([]);
   const [matriculados, setMatriculados] = useState<MatriculaCompleta[]>([]);
   const [Propinas, setPropinas] = useState<Propina[]>([]);
@@ -71,8 +71,7 @@ function Summary() {
 
   return (
     <section className={classes.summary}>
-      <i className="bi bi-xbox text-5xl"></i>
-      <p className="subTitle">Resumo</p>
+      <p className="subTitle">Resumo Institucional</p>
       <div className={classes.summary__box}>
         {summaryData.map((item) => (
           <SummaryBox key={item.text} item={item} />

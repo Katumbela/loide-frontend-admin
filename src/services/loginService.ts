@@ -19,7 +19,7 @@ export const login = async (
     return response.data;
   } catch (error) {
     throw new Error(
-      "Login failed. Please check your credentials and try again."
+      "Email ou password errada, tente novamente"
     );
   }
 };

@@ -1,91 +1,107 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import useFetch from "../hook/useFetch";
-import CustomTable from "../components/tables/customTable/CustomTable";
-import { IProductsTable } from "../interfaces/Itable";
-import { products, productsHeader } from "../constants/tables";
-import LoadingSpinner from "../components/UI/loadingSpinner/LoadingSpinner";
-import Dropdown from "../components/UI/dropdown/Dropdown";
+import { AlunoInscrito } from "../interfaces/aluno";
+import classes from "../components/tables/customTable/CustomTable.module.scss";
+import { MatriculaCompleta, Propina } from "../interfaces/matriculado";
+import { makeAuthorizedRequest } from "../services/authorizedRequest";
+import { Link } from "react-router-dom";
 
-const url =
-  "https://admin-panel-79c71-default-rtdb.europe-west1.firebasedatabase.app/products.json";
-
-const dropdownOptions = [
-  { label: "all", value: "all" },
-  { label: "digital", value: "digital" },
-  { label: "clothing", value: "clothing" },
-  { label: "beauty", value: "beauty" },
-];
 function Products() {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState(dropdownOptions[0].value);
-  const { data, error, status } = useFetch<IProductsTable[]>(url);
-  let productsTable;
-  let tableData: IProductsTable[] | undefined;
 
-  function selectedChangeHandler(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelected(() => e.target.value);
-  }
+  const [inscritos, setInscritos] = useState<AlunoInscrito[]>([]);
+  const [matriculados, setMatriculados] = useState<MatriculaCompleta[]>([]);
+  const [Propinas, setPropinas] = useState<Propina[]>([]);
 
-  if (status === "loading") {
-    productsTable = <LoadingSpinner />;
-  }
+  const [showModal, setShowModal] = useState(false);
 
-  if (error) {
-    //if fetch has error:
-    //select data from local file ("../constants/tables.ts")
-    switch (selected) {
-      case "digital":
-        tableData = products?.filter((item) => item.category === selected);
-        break;
-      case "clothing":
-        tableData = products?.filter((item) => item.category === selected);
-        break;
-      case "beauty":
-        tableData = products?.filter((item) => item.category === selected);
-        break;
-      default:
-        tableData = products;
-    }
+  useEffect(() => {
+    const getInscritos = async () => {
+      const inscritos = await makeAuthorizedRequest("GET", "/aluno");
+      setInscritos(inscritos.data);
+      // console.log(inscritos.data);
+    };
 
-    productsTable = (
-      <CustomTable headData={productsHeader} bodyData={tableData} limit={10} />
-    );
-  }
+    const getMatriculados = async () => {
+      const matriculados = await makeAuthorizedRequest("GET", "/matricula");
+      setMatriculados(matriculados.data);
+      // console.log(matriculados.data);
+    };
 
-  if (status === "fetched" && data) {
-    switch (selected) {
-      case "digital":
-        tableData = data?.filter((item) => item.category === selected);
-        break;
-      case "clothing":
-        tableData = data?.filter((item) => item.category === selected);
-        break;
-      case "beauty":
-        tableData = data?.filter((item) => item.category === selected);
-        break;
-      default:
-        tableData = data;
-    }
+    const getPropinas = async () => {
+      const propinas = await makeAuthorizedRequest("GET", "/propina");
+      setPropinas(propinas.data);
+      // console.log(propinas.data);
+    };
 
-    productsTable = (
-      <CustomTable
-        selectedCategory={selected}
-        headData={productsHeader}
-        bodyData={tableData}
-        limit={10}
-      />
-    );
+    getInscritos();
+    getMatriculados();
+    getPropinas();
+  }, []);
+
+
+  const getCourse = async (code: number) => {
+    const curso = await makeAuthorizedRequest("GET", "/curso/" + code);
+    console.log(curso)
+    // console.log(propinas.data);
+  };
+
+
+  const somaValoresPropinas = (propinas: Propina[]): number => {
+    let total = 0;
+    propinas.forEach((propina) => {
+      // Converter o valor de string para número
+      const valor = parseFloat(propina.valor);
+      total += valor;
+    });
+    return total;
+  };
+
+  function showModalHandler() {
+    setShowModal((prev) => !prev);
   }
 
   return (
     <section>
-      <h2 className="title">{t("products")}</h2>
-      {/* <Dropdown
-        dropdownData={dropdownOptions}
-        onChange={selectedChangeHandler}
-      /> */}
-      {productsTable}
+      <div className="flex justify-between">
+
+        <h2 className="my-auto title">Estudantes Matrículados</h2>
+        <button className="px-5 py-2 my-auto font-semibold text-white bg-red-600 rounded-md click">Matricular Aluno</button>
+      </div>
+      <br />
+      <br />
+      <div className={classes.wrapper}>
+        <div className={classes.table__wrapper}>
+          <table className={classes.table}>
+            <thead>
+              <tr>
+                <th>Nº</th>
+                <th>Nome</th>
+                <th>Curso</th>
+                <th>Nível</th>
+                <th>Data</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {matriculados.map((aluno) => (
+                <tr>
+                  <td>{aluno.n_matricula}</td>
+                  <td>( {aluno.cod_aluno} )  {aluno.aluno.nome}</td>
+                  <td>{aluno.curso.descricao} ( {aluno.periodo.descricao} )</td>
+                  <td>{aluno.curso.tipo_curso}</td>
+                  <td>{aluno.data}</td>
+                  <td>
+                    <Link to={`/student/${aluno.n_matricula}`}>
+                      <i className="text-xl cursor-pointer bi bi-eye-fill hover:text-red-700"></i>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
   );
 }

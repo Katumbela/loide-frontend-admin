@@ -7,19 +7,19 @@ const sidebarNav = [
   },
   {
     link: "/products",
-    section: "products",
+    section: "Propinas",
     icon: "icon-park-outline:ad-product",
-    text: "Products",
+    text: "Propinas",
   },
   {
     link: "/customers",
-    section: "customers",
+    section: "Inscritos",
     icon: "ph:users-bold",
-    text: "Matriculados",
+    text: "Inscritos",
   },
   {
     link: "/orders",
-    section: "orders",
+    section: "Cursos",
     icon: "icon-park-outline:transaction-order",
     text: "Inscritos",
   },
@@ -32,12 +32,14 @@ const sidebarNav = [
   },
 
   */
+
   {
-    link: "/discount",
-    section: "discount",
+    link: "/relatorios",
+    section: "Relatórios",
     icon: "nimbus:discount-circle",
-    text: "Discount",
+    text: "Relatório",
   },
+
   /*
   {
     link: "/inventory",

@@ -37,9 +37,8 @@ function Sidebar() {
 
   return (
     <div
-      className={`${classes.sidebar} ${
-        !sidebarCtx.isOpen && classes.sidebar_close
-      }`}
+      className={`${classes.sidebar} ${!sidebarCtx.isOpen && classes.sidebar_close
+        }`}
     >
       <div className={'p-5'}>
         <img src={images.logo_f} alt="digikala" className="mx-auto rounded-2xl" />
@@ -49,9 +48,8 @@ function Sidebar() {
           <Link
             to={nav.link}
             key={`nav-${index}`}
-            className={`${classes.sidebar__menu__item} ${
-              activeIndex === index && classes.active
-            }`}
+            className={`${classes.sidebar__menu__item} ${activeIndex === index && classes.active
+              }`}
             onClick={openSidebarHandler}
           >
             <div className={classes.sidebar__menu__item__icon}>

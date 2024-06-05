@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { images } from "../../../../constants";
 import classes from "./Profile.module.scss";
-import { useTranslation } from "react-i18next"; 
+import { useTranslation } from "react-i18next";
 import { LoginResponse } from "../../../../interfaces/userInterface";
 
 function Profile() {
@@ -31,7 +31,7 @@ function Profile() {
         <img src={images.avt} alt="avatar" />
       </div>
       <div className={classes.profile__info}>
-        <p className={classes.profile__userName}> {user?.user.name.split(' ')[0]+ ' ' +user?.user.name.split(' ').pop()} </p>
+        <p className={classes.profile__userName}> {user?.user.name.split(' ')[0] + ' ' + user?.user.name.split(' ').pop()} </p>
         {/* <span className={classes.profile__role}>{t("admin")}</span> */}
       </div>
     </div>

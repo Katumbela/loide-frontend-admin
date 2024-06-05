@@ -43,15 +43,18 @@ function LoginBox() {
           setLoading(false);
           navigate("/");
         } else {
-          setErrorMessage(response.message);
 
           setLoading(false);
+          setErrorMessage(response.message);
+
           errorMessageRef.current?.setAttribute(
             "style",
             "display: inline-block;opacity: 1"
           );
         }
       } catch (error: any) {
+
+        setLoading(false);
         setErrorMessage(error.message);
         errorMessageRef.current?.setAttribute(
           "style",
@@ -63,9 +66,8 @@ function LoginBox() {
 
   return (
     <div
-      className={`${classes.container} ${
-        langCtx.lang === "fa" ? classes.rtl : ""
-      }`}
+      className={`${classes.container} ${langCtx.lang === "fa" ? classes.rtl : ""
+        }`}
     >
       <div className={classes.loginBox}>
         <div className={classes.logo + " py-[4rem]"}>
@@ -80,18 +82,32 @@ function LoginBox() {
             ref={userNameRef}
             type={"text"}
             id={"userName"}
-            placeholder={"admin"}
+            placeholder={"admin@sistema"}
           />
-          <span ref={errorMessageRef} className={classes.errorMessage}>
-            {errorMessage || t("errorMessage")}
-          </span>
           <Input
             ref={passwordRef}
             type={"password"}
             id={"pass"}
-            placeholder={"admin"}
+            placeholder={"******"}
           />
-          <Button type="submit">{t("login")}</Button>
+
+          <span ref={errorMessageRef} className={classes.errorMessage + ' mx-auto w-11/12 text-center'}>
+            {errorMessage || t("errorMessage")}
+          </span>
+          {
+            load ?
+
+              <div className="flex justify-center w-full">
+
+                <span>Entrando...</span>
+                <br />
+              </div>
+              :
+              <Button type="submit">
+                <span>Entrar</span>
+              </Button>
+          }
+
           <Link className={classes.forgat_pass} to="/">
             {t("forgetPass")}
           </Link>
