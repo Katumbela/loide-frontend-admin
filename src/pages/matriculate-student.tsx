@@ -105,7 +105,7 @@ function MatriculateStudent() {
         </div>
         <hr />
         <br />
-        <div className="grid grid-cols-3 gap-6 p-6 text-black bg-red-100">
+        <div className="grid grid-cols-3 gap-6 p-6 text-black bg-red-100 dark:bg-gray-300/30">
           <input
             type="number"
             placeholder="Valor"
@@ -116,27 +116,26 @@ function MatriculateStudent() {
           />
           <select
             className="w-full px-3 py-2 text-black rounded-sm outline-none me-4" value={cur} onChange={(e) => setCur(e.target.value)}>
-            <option value="">Selecionar classe / curso </option>
+            <option value="">Selecionar classe  </option>
             {cursos.map((curso, i) => (
               <option key={i} value={curso.cod_curso}>
-                {curso.descricao} {curso.tipo_curso}
+                {curso.descricao}
               </option>
             ))}
           </select>
-          {
-            /*
-  
-   <select
-              className="w-full px-3 py-2 text-black rounded-sm outline-none me-4" value={cur} onChange={(e) => setCur(e.target.value)}>
-              <option value="">Selecionar curso</option>
-              {cursos.filter((c) => c.descricao !== '').map((curso, i) => (
-                <option key={i} value={curso.cod_curso}>
-                  {curso.tipo_curso}
-                </option>
-              ))}
-            </select>
-            */
-          }
+
+
+          <select
+            className="w-full px-3 py-2 text-black rounded-sm outline-none me-4" value={cur} onChange={(e) => setCur(e.target.value)}>
+            <option value="">Selecionar curso</option>
+            {cursos.filter((c) => c.tipo_curso !== '').map((curso, i) => (
+              <option key={i} value={curso.cod_curso}>
+                {curso.tipo_curso}
+              </option>
+            ))}
+          </select>
+
+
           <select
             className="w-full px-3 py-2 text-black rounded-sm outline-none me-6"
             value={periodo}
@@ -149,7 +148,7 @@ function MatriculateStudent() {
           </select>
 
         </div>
-        <div className="grid flex-wrap grid-cols-3 gap-6 p-6 text-black bg-red-100">
+        <div className="grid flex-wrap grid-cols-3 gap-6 p-6 text-black bg-red-100 dark:bg-gray-300/30">
 
           <input
             type="text"
