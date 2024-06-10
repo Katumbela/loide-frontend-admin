@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import { makeAuthorizedRequest } from "../services/authorizedRequest";
 import { MatriculaCompleta } from "../interfaces/matriculado";
 import { PayTuitionService } from "../services/pay-tuition-service";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { MESES } from "../constants/meses";
+import LoadingSpinner from "../components/UI/loadingSpinner/LoadingSpinner";
 
 
 function PayTuition() {
@@ -12,12 +13,22 @@ function PayTuition() {
   const [matriculaData, setMatriculaData] = useState<MatriculaCompleta | null>(null);
   const [valor, setValor] = useState<string>("");
   const [mes, setMes] = useState<number>(1);
+  const [load, setLoad] = useState<boolean>(false);
   const [metodoPagamento, setMetodoPagamento] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoad(true)
+    if (valor === '') {
+      toast.error('Campo valor a pagar está vazio')
+      setLoad(false)
+      return
+
+    }
 
     try {
+
+      setLoad(true)
       const data = {
         valor: valor,
         n_matricula: n_matricula,
@@ -28,9 +39,13 @@ function PayTuition() {
       const response = await PayTuitionService(data);
       //console.log(response); // Exibe a mensagem de sucesso ou erro
       toast.success(response.message)
+
+      setLoad(false)
       // Redireciona ou exibe outra mensagem dependendo da resposta
     } catch (error: any) {
       console.log(error);
+
+      setLoad(false)
       toast.error(error.message)
       // Exibe uma mensagem de erro para o usuário
     }
@@ -91,12 +106,21 @@ function PayTuition() {
             value={metodoPagamento}
             onChange={(e) => setMetodoPagamento(e.target.value)}
           >
-            <option value="">Selecione um método de pagamento</option>
+            <option value="">Método de pagamento</option>
             <option value="TPA">TPA</option>
             <option value="Depósito">Depósito</option>
             <option value="Transferência">Transferência</option>
           </select>
-          <button className="px-5 font-semibold text-white bg-red-600 rounded-md" type="submit">Pagar Propina</button>
+          <button disabled={load} className="px-5 font-semibold text-white transition-all bg-red-600 rounded-md ms-auto disabled:bg-red-800/50 " type="submit">{
+            load ?
+              <>
+                Carregando...
+              </>
+              :
+              <span>
+                Pagar Propina
+              </span>
+          }</button>
         </div>
       </form>
     </div>

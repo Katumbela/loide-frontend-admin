@@ -10,6 +10,7 @@ import Relatorios from "./pages/relatorios";
 import StudentDetails from "./pages/student-details";
 import Profile from "./components/topnav/rightBox/profile/Profile";
 import PayTuition from "./pages/pay-propina";
+import MatriculateStudent from "./pages/matriculate-student";
 
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Customers = React.lazy(() => import("./pages/Customers"));
@@ -34,6 +35,7 @@ function App() {
               <Route path="/orders" element={<Courses />} />
               <Route path="/analytics" element={<BlankPage />} />
               <Route path="/relatorios" element={<Relatorios />} />
+              <Route path="/matricular-estudante" element={<MatriculateStudent />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/pay-tuition/:n_matricula" element={<PayTuition />} />
             </Route>

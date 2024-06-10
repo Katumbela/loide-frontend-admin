@@ -5,6 +5,7 @@ import classes from "../components/tables/customTable/CustomTable.module.scss";
 import { MatriculaCompleta, Propina } from "../interfaces/matriculado";
 import { makeAuthorizedRequest } from "../services/authorizedRequest";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Products() {
   const { t } = useTranslation();
@@ -66,7 +67,7 @@ function Products() {
       <div className="flex justify-between">
 
         <h2 className="my-auto title">Estudantes Matrículados</h2>
-        <button className="px-5 py-2 my-auto font-semibold text-white bg-red-600 rounded-md click">Matricular Aluno</button>
+        <NavLink to={'/matricular-estudante'} className="px-5 py-2 my-auto font-semibold text-white bg-red-600 rounded-md click">Matricular Aluno</NavLink>
       </div>
       <br />
       <br />
