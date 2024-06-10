@@ -5,7 +5,7 @@ import { LoginResponse } from "../interfaces/userInterface";
 
 // Função para obter o token de autenticação do localStorage
 const getAuthToken = (): string | null => {
-  const token = localStorage.getItem('account');
+  const token = localStorage.getItem("account");
   if (token) {
     try {
       const account: LoginResponse = JSON.parse(token);
@@ -30,22 +30,21 @@ export const makeAuthorizedRequest = async <T = any>(
       method,
       url: `${env.apiUrl}${url}`,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token && { Authorization: `Bearer ${token}` }),
       },
       ...options,
     };
 
-    if (method === 'GET' || method === 'DELETE') {
+    if (method === "GET" || method === "DELETE") {
       config.params = params;
     } else {
       config.data = params;
     }
-
     const response = await axios(config);
     return response;
   } catch (error) {
-    console.error('Request failed', error);
+    console.error("Request failed", error);
     throw error;
   }
 };

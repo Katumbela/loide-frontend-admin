@@ -11,20 +11,22 @@ import classes from "./Sidebar.module.scss";
 
 function Sidebar() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [navActive, setnavActive] = useState('');
   const { width } = useWindowSize();
   const location = useLocation();
   const sidebarCtx = useContext(SidebarContext);
   const loginCtx = useContext(LoginContext);
   const { t } = useTranslation();
 
-  function openSidebarHandler() {
+  function openSidebarHandler(nav: string) {
+    setnavActive(nav)
     //for width>768(tablet size) if sidebar was open in width<768 was opened too.
     //just in case of tablet size and smaller then, sidebar__open can added.
     if (width <= 768) document.body.classList.toggle("sidebar__open");
   }
 
   function logoutHandler() {
-    openSidebarHandler();
+    // openSidebarHandler();
     loginCtx.toggleLogin();
   }
 
@@ -48,9 +50,8 @@ function Sidebar() {
           <Link
             to={nav.link}
             key={`nav-${index}`}
-            className={`${classes.sidebar__menu__item} ${activeIndex === index && classes.active
-              }`}
-            onClick={openSidebarHandler}
+            className={` ${classes.sidebar__menu__item} ${navActive === nav.section && classes.active} `}
+            onClick={() => openSidebarHandler(nav.section)}
           >
             <div className={classes.sidebar__menu__item__icon}>
               <Icon icon={nav.icon} />

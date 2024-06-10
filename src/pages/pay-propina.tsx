@@ -19,7 +19,7 @@ function PayTuition() {
 
     try {
       const data = {
-        valor,
+        valor: valor,
         n_matricula: n_matricula,
         cod_mes: mes,
         forma_pagamento: metodoPagamento
@@ -55,7 +55,7 @@ function PayTuition() {
   }, [n_matricula]);
 
   if (!matriculaData) {
-    return <div>Loading ... </div>;
+    return <div>Carregando dados ... </div>;
   }
 
 
@@ -64,20 +64,22 @@ function PayTuition() {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="flex justify-between">
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold ">
             Pagar Propina de {matriculaData.aluno.nome}
           </h1>
         </div>
         <hr />
         <br />
-        <div className="flex p-6 text-black bg-blue-300">
+        <div className="flex p-6 text-black bg-red-100">
           <input
-            type="text"
+            type="number"
             placeholder="Valor"
             value={valor}
+            className="px-3 py-2 text-black rounded-sm outline-none me-4"
             onChange={(e) => setValor(e.target.value)}
           />
-          <select value={mes} onChange={(e) => setMes(parseInt(e.target.value))}>
+          <select
+            className="px-3 py-2 text-black rounded-sm outline-none me-4" value={mes} onChange={(e) => setMes(parseInt(e.target.value))}>
             {MESES.map((mes) => (
               <option key={mes.cod_mes} value={mes.cod_mes}>
                 {mes.descricao}
@@ -85,6 +87,7 @@ function PayTuition() {
             ))}
           </select>
           <select
+            className="px-3 py-2 text-black rounded-sm outline-none me-6"
             value={metodoPagamento}
             onChange={(e) => setMetodoPagamento(e.target.value)}
           >
@@ -93,9 +96,8 @@ function PayTuition() {
             <option value="Depósito">Depósito</option>
             <option value="Transferência">Transferência</option>
           </select>
+          <button className="px-5 font-semibold text-white bg-red-600 rounded-md" type="submit">Pagar Propina</button>
         </div>
-        <br />
-        <button type="submit">Pagar Propina</button>
       </form>
     </div>
   );

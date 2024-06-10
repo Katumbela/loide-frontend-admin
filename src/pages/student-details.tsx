@@ -42,7 +42,7 @@ function StudentDetails() {
   }, [n_matricula]);
 
   if (!matriculaData) {
-    return <div>Loading...</div>;
+    return <div>Carregando dados do estudante...</div>;
   }
 
 
@@ -58,7 +58,7 @@ function StudentDetails() {
 
         <h1 className="text-2xl font-bold">Detalhes do(a) Estudante</h1>
 
-        <Link to={'/pay-tuition/' + matriculaData.n_matricula} className="px-4 py-2 my-auto bg-red-600">
+        <Link to={'/pay-tuition/' + matriculaData.n_matricula} className="px-4 py-2 my-auto text-white bg-red-600">
           Pagar Propina
         </Link>
       </div>
@@ -117,7 +117,7 @@ function StudentDetails() {
 
       <ul className="mt-6">
         {MESES.map((mes) => (
-          <li className="py-2 border-b" key={mes.cod_mes}>
+          <li className={`py-2 border-b  ${getPagoStatus(mes.cod_mes) !== '----------- Não Pago  ---------------' && 'bg-blue-200/60 '}`} key={mes.cod_mes}>
             <span className="font-semibold me-8">{mes.descricao}:</span>  {getPagoStatus(mes.cod_mes)}
           </li>
         ))}

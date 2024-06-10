@@ -5,6 +5,7 @@ import { MatriculaCompleta } from "../interfaces/matriculado";
 
 interface CourseInfo {
   descricao: string;
+  curso: string
   count: number;
 }
 
@@ -19,6 +20,7 @@ const countStudentsByCourse = (data: MatriculaCompleta[]): StudentCountByCourse 
     if (!acc[cod_curso]) {
       acc[cod_curso] = {
         descricao: curso.descricao,
+        curso: curso.tipo_curso,
         count: 0,
       };
     }
@@ -54,18 +56,22 @@ function Relatorios() {
         <thead>
           <tr>
             <th>COD Curso</th>
+            <th>Classe</th>
             <th>Curso</th>
             <th>Estudantes Matrículados</th>
           </tr>
         </thead>
         <tbody>
           {Object.entries(studentCountByCourse).map(([cod_curso, info]) => (
-            <tr key={cod_curso}>
+            <tr className="" key={cod_curso}>
               <td>
                 # {cod_curso}
               </td>
               <td>
                 {info.descricao}
+              </td>
+              <td>
+                {info.curso}
               </td>
               <td>
                 {info.count} estudante(s)
