@@ -44,14 +44,13 @@ function MatriculateStudent() {
         setTelefone(data.data.telefone)
         setGen(data.data.genero)
         setNascimento(data.data.data_nascimento)
-
-
       }
     } catch (error) {
       console.error("Error fetching matricula data:", error);
     }
   }
 
+  
 
 
 
